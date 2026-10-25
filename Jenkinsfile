@@ -23,23 +23,24 @@ pipeline {
 
         stage('Start Services') {
             steps {
-                bat 'docker compose up -d --build'
+                bat '"C:\\Users\\DIVYADARSHNI  KUMAR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker-compose.exe" up -d --build'
             }
         }
 
         stage('Run Django Tests') {
             steps {
-                bat 'docker compose exec -T web python manage.py test inventory'
+                bat '"C:\\Users\\DIVYADARSHNI  KUMAR\\AppData\\Local\\Programs\\DockerDesktop\\resources\\bin\\docker-compose.exe" exec -T web python manage.py test inventory'
             }
         }
     }
 
     post {
         success {
-            echo 'All CI stages and Django tests completed successfully!'
+            echo 'SUCCESS: Docker build, Django check, and tests completed!'
         }
+
         failure {
-            echo 'Pipeline failed. Check Console Output.'
+            echo 'FAILED: Check the Console Output for the error.'
         }
     }
 }
