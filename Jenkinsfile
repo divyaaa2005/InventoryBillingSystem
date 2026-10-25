@@ -5,17 +5,29 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out Inventory and Billing System from GitHub'
-                git branch: 'main',
-                    url: 'https://github.com/divyaaa2005/InventoryBillingSystem.git'
+                echo 'Checking out code from GitHub'
             }
         }
 
-        stage('Verify Project') {
+        stage('Build Docker Image') {
             steps {
-                echo 'GitHub repository cloned successfully!'
-                bat 'dir'
+                bat 'docker build -t inventory-billing-system .'
             }
+        }
+
+        stage('Django System Check') {
+            steps {
+                bat 'docker run --rm inventory-billing-system python manage.py check'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI pipeline completed successfully!'
+        }
+        failure {
+            echo 'CI pipeline failed. Check the console output.'
         }
     }
 }
