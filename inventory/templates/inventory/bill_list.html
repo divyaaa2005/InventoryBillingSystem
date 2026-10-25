@@ -1,0 +1,47 @@
+
+{% extends "inventory/base.html" %}
+
+{% block title %}Bills | Inventory & Billing{% endblock %}
+
+{% block content %}
+<h1>Customer Bills</h1>
+<p class="muted">View the bills recorded in the system.</p>
+
+<div class="panel">
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Products</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>#{{ bill.id }}</td>
+                    <td>{{ bill.customer_name }}</td>
+                    <td>{{ bill.created_at|date:"d M Y, H:i" }}</td>
+                    <td>
+                        {% for item in bill.items.all %}
+                        {{ item.product.name }} ({{ item.quantity }}){% if not forloop.last %}, {% endif %}
+                        {% empty %}
+                        No items
+                        {% endfor %}
+                    </td>
+                    <td>₹{{ bill.total_amount }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5">No bills created yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <p><a href="{% url 'admin:inventory_bill_add' %}">Create a bill through Admin</a></p>
+</div>
+{% endblock %}

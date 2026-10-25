@@ -1,0 +1,58 @@
+
+{% extends "inventory/base.html" %}
+
+{% block title %}Dashboard | Inventory & Billing{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p class="muted">Welcome to your Inventory and Billing System.</p>
+
+<div class="cards">
+    <div class="card">
+        <h3>Total Products</h3>
+        <div class="number">{{ total_products }}</div>
+    </div>
+
+    <div class="card">
+        <h3>Total Stock</h3>
+        <div class="number">{{ total_stock }}</div>
+        <p class="muted">Items available</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Bills</h3>
+        <div class="number">{{ total_bills }}</div>
+    </div>
+</div>
+
+<div class="panel">
+    <h2>Recent Bills</h2>
+
+    {% if bills %}
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Bill ID</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td>#{{ bill.id }}</td>
+                    <td>{{ bill.customer_name }}</td>
+                    <td>{{ bill.created_at|date:"d M Y, H:i" }}</td>
+                    <td>₹{{ bill.total_amount }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="muted">No bills have been created yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
