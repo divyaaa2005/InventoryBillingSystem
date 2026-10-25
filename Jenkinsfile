@@ -5,7 +5,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out code from GitHub'
+                echo 'Code fetched from GitHub'
             }
         }
 
@@ -20,14 +20,20 @@ pipeline {
                 bat 'docker run --rm inventory-billing-system python manage.py check'
             }
         }
+
+        stage('Run Django Tests') {
+            steps {
+                bat 'docker run --rm inventory-billing-system python manage.py test'
+            }
+        }
     }
 
     post {
         success {
-            echo 'CI pipeline completed successfully!'
+            echo 'All CI stages completed successfully!'
         }
         failure {
-            echo 'CI pipeline failed. Check the console output.'
+            echo 'Pipeline failed. Check Console Output.'
         }
     }
 }
